@@ -1,32 +1,37 @@
 {
     "name": "react-pitu",
     "version": "1.0.0",
-    "description": "React Dynamic Pagination",
-    "main": "dist/index.js",
+    "description": "ReactJS Dynamic Pagination",
+    "main": "build/index.js",
+    "license": "ISC",
     "peerDependencies": {
         "react": "^16.8.6"
     },
     "dependencies": {
-        "react": "^16.8.6",
-        "webpack": "^4.35.0"
+        "react": "^16.8.6"
     },
     "scripts": {
         "start": "webpack --watch",
-        "build": "webpack"
+        "build": "webpack --colors --display-error-details --source-maps",
+        "prepublish": "babel ./src --out-dir ./build --source-maps"
     },
     "author": {
         "name": "Dilum Darshana",
         "email": "dilum@eight25media.com"
     },
     "devDependencies": {
-        "@babel/core": "^7.4.5",
-        "@babel/preset-env": "^7.4.5",
-        "babel-cli": "^6.26.0",
-        "babel-core": "^6.26.3",
+        "@babel/cli": "^7.5.0",
+        "@babel/core": "^7.5.0",
+        "@babel/preset-env": "^7.5.0",
+        "@babel/preset-react": "^7.0.0",
         "babel-loader": "^8.0.6",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "babel-plugin-transform-react-jsx": "^6.24.1",
         "babel-preset-env": "^1.7.0",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "react-hot-loader": "^4.12.3",
+        "webpack": "^4.35.2",
         "webpack-cli": "^3.3.5"
     }
 }

@@ -205,7 +205,7 @@ class Pagination extends Component {
 
         const { total, perPage } = this.props;
 
-        const paginationPerPageList = 10;
+        const paginationPerPageList = [5, 10, 15];
 
         const defaultPerPage = 5;
 
