@@ -8,13 +8,13 @@ class Pagination extends Component {
         this.state = {
             paginationOutData: {
                 itemsPerPage: 0,
-                cursor: 1,
+                cursor: 1
             },
             displaySize: 5, // how many page buttons show
             displayStartsAt: 1, // page buttons start number
             pageButtonsStack: [], // page buttons to show on current go
             previousButtonClass: 'lst-disabled',
-            nextButtonClass: '',
+            nextButtonClass: ''
         };
     }
 
@@ -24,8 +24,8 @@ class Pagination extends Component {
         await this.setState({
             paginationOutData: {
                 itemsPerPage: perPage,
-                cursor: 1,
-            },
+                cursor: 1
+            }
         });
 
         this.setNextPrevButtonStatus();
@@ -41,9 +41,9 @@ class Pagination extends Component {
             await this.setState({
                 paginationOutData: {
                     itemsPerPage: perPage,
-                    cursor: 1,
+                    cursor: 1
                 },
-                displayStartsAt: 1,
+                displayStartsAt: 1
             });
 
             this.setNextPrevButtonStatus();
@@ -53,28 +53,41 @@ class Pagination extends Component {
     }
 
     getTotalNumberOfButtons() {
-        const { paginationOutData: { itemsPerPage } } = this.state;
+        const {
+            paginationOutData: { itemsPerPage }
+        } = this.state;
         const { total } = this.props;
 
         return Math.ceil(total / itemsPerPage);
     }
 
     async setNextPrevButtonStatus() {
-        const { paginationOutData: { cursor } } = this.state;
+        const {
+            paginationOutData: { cursor }
+        } = this.state;
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
-        const nextButtonClass = (cursor === maxNumberOfButtons) ? 'lst-disabled' : '';
-        const previousButtonClass = (cursor === 1) ? 'lst-disabled' : '';
+        const nextButtonClass =
+            cursor === maxNumberOfButtons ? 'lst-disabled' : '';
+        const previousButtonClass = cursor === 1 ? 'lst-disabled' : '';
 
         await this.setState({ previousButtonClass, nextButtonClass });
     }
 
     decideWalkingDirection() {
-        const { paginationOutData: { cursor }, pageButtonsStack } = this.state;
-        const middle = pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1];
+        const {
+            paginationOutData: { cursor },
+            pageButtonsStack
+        } = this.state;
+        const middle =
+            pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1];
         let direction = '';
 
-        if (middle > cursor) { direction = 'left'; }
-        if (middle < cursor) { direction = 'right'; }
+        if (middle > cursor) {
+            direction = 'left';
+        }
+        if (middle < cursor) {
+            direction = 'right';
+        }
 
         return direction;
     }
@@ -83,8 +96,15 @@ class Pagination extends Component {
         const { displayStartsAt, displaySize } = this.state;
         const itemsArr = [];
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
-        const displayEnd = maxNumberOfButtons <= displaySize ? maxNumberOfButtons : displaySize;
-        for (let i = displayStartsAt; i < displayStartsAt + displayEnd; i += 1) {
+        const displayEnd =
+            maxNumberOfButtons <= displaySize
+                ? maxNumberOfButtons
+                : displaySize;
+        for (
+            let i = displayStartsAt;
+            i < displayStartsAt + displayEnd;
+            i += 1
+        ) {
             itemsArr.push(i);
         }
 
@@ -92,15 +112,26 @@ class Pagination extends Component {
     }
 
     async walkToRight() {
-        const { displayStartsAt, displaySize, pageButtonsStack, paginationOutData: { cursor } } = this.state;
+        const {
+            displayStartsAt,
+            displaySize,
+            pageButtonsStack,
+            paginationOutData: { cursor }
+        } = this.state;
 
         // check how many buttons can be go
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
-        const cursorGap = cursor - pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1];
+        const cursorGap =
+            cursor -
+            pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1];
 
         if (displayStartsAt + displaySize <= maxNumberOfButtons) {
-            const maxGapEnd = maxNumberOfButtons - displaySize - displayStartsAt + 1;
-            const maxGap = (displayStartsAt + cursorGap + displaySize) >= maxNumberOfButtons ? maxGapEnd : cursorGap;
+            const maxGapEnd =
+                maxNumberOfButtons - displaySize - displayStartsAt + 1;
+            const maxGap =
+                displayStartsAt + cursorGap + displaySize >= maxNumberOfButtons
+                    ? maxGapEnd
+                    : cursorGap;
 
             await this.setState({ displayStartsAt: displayStartsAt + maxGap });
 
@@ -109,12 +140,22 @@ class Pagination extends Component {
     }
 
     async walkToLeft() {
-        const { displayStartsAt, paginationOutData: { cursor }, pageButtonsStack } = this.state;
-        const cursorGap = Math.abs(pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1] - cursor);
+        const {
+            displayStartsAt,
+            paginationOutData: { cursor },
+            pageButtonsStack
+        } = this.state;
+        const cursorGap = Math.abs(
+            pageButtonsStack[Math.ceil(pageButtonsStack.length / 2) - 1] -
+            cursor
+        );
 
         // check how many buttons can be go
         if (displayStartsAt > 1) {
-            const newStartAt = displayStartsAt - cursorGap === 0 ? 1 : displayStartsAt - cursorGap;
+            const newStartAt =
+                displayStartsAt - cursorGap === 0
+                    ? 1
+                    : displayStartsAt - cursorGap;
             await this.setState({ displayStartsAt: newStartAt });
 
             this.createPageButtonStack();
@@ -122,12 +163,16 @@ class Pagination extends Component {
     }
 
     async handlePrevious() {
-        const { paginationOutData: { cursor, itemsPerPage } } = this.state;
+        const {
+            paginationOutData: { cursor, itemsPerPage }
+        } = this.state;
         const { onPropertyChange } = this.props;
 
         const nextCursor = cursor > 1 ? cursor - 1 : cursor;
 
-        await this.setState({ paginationOutData: { cursor: nextCursor, itemsPerPage } });
+        await this.setState({
+            paginationOutData: { cursor: nextCursor, itemsPerPage }
+        });
 
         const direction = this.decideWalkingDirection();
 
@@ -141,12 +186,17 @@ class Pagination extends Component {
     }
 
     async handleNext() {
-        const { paginationOutData: { cursor, itemsPerPage } } = this.state;
+        const {
+            paginationOutData: { cursor, itemsPerPage }
+        } = this.state;
         const { onPropertyChange } = this.props;
 
-        const nextCursor = cursor < this.getTotalNumberOfButtons() ? cursor + 1 : cursor;
+        const nextCursor =
+            cursor < this.getTotalNumberOfButtons() ? cursor + 1 : cursor;
 
-        await this.setState({ paginationOutData: { cursor: nextCursor, itemsPerPage } });
+        await this.setState({
+            paginationOutData: { cursor: nextCursor, itemsPerPage }
+        });
 
         const direction = this.decideWalkingDirection();
 
@@ -165,7 +215,7 @@ class Pagination extends Component {
 
         const paginationOutData = {
             itemsPerPage: newItemsPerPage,
-            cursor: 1,
+            cursor: 1
         };
 
         await this.setState({ paginationOutData, displayStartsAt: 1 });
@@ -178,7 +228,9 @@ class Pagination extends Component {
     }
 
     async handleCurrentPage(page) {
-        const { paginationOutData: { itemsPerPage } } = this.state;
+        const {
+            paginationOutData: { itemsPerPage }
+        } = this.state;
         const { onPropertyChange } = this.props;
 
         const paginationData = { cursor: page, itemsPerPage };
@@ -201,7 +253,12 @@ class Pagination extends Component {
     }
 
     render() {
-        const { paginationOutData: { cursor }, pageButtonsStack, previousButtonClass, nextButtonClass } = this.state;
+        const {
+            paginationOutData: { cursor },
+            pageButtonsStack,
+            previousButtonClass,
+            nextButtonClass
+        } = this.state;
 
         const { total, perPage } = this.props;
 
@@ -209,25 +266,55 @@ class Pagination extends Component {
 
         const defaultPerPage = 5;
 
-        const perPageItemOptions = paginationPerPageList.map(option => <option key={option}>{option}</option>);
+        const perPageItemOptions = paginationPerPageList.map(option => (
+            <option key={option}>{option}</option>
+        ));
 
-        const paginationButtons = pageButtonsStack.map(elm => (<button type="button" key={elm} className={`page number ${elm === cursor ? 'active' : ''}`} onClick={e => this.handleCurrentPage(elm)}>{elm}</button>));
+        const paginationButtons = pageButtonsStack.map(elm => (
+            <button
+                type="button"
+                key={elm}
+                className={`page number ${elm === cursor ? 'active' : ''}`}
+                onClick={() => this.handleCurrentPage(elm)}
+            >
+                {elm}
+            </button>
+        ));
 
-        return (total > 0
-            && (
+        return (
+            total > 0 && (
                 <div className="pagination-wrapper">
-                    <span className="per-page">Per Page
-                        <select className="form-control" value={perPage || defaultPerPage} onChange={e => this.handleItemsPerPage(e)}>
+                    <span className="per-page">
+                        Per Page
+                        <select
+                            className="form-control"
+                            value={perPage || defaultPerPage}
+                            onChange={e => this.handleItemsPerPage(e)}
+                        >
                             {perPageItemOptions}
                         </select>
                     </span>
                     <div className="page-wrapper mobile-custom-margin">
-                        <button type="button" className={`page prev-page ${previousButtonClass}`} onClick={e => this.handlePrevious()}>
-                            <img src="../assets/images/paginate-left.png" alt="" />
+                        <button
+                            type="button"
+                            className={`page prev-page ${previousButtonClass}`}
+                            onClick={() => this.handlePrevious()}
+                        >
+                            <img
+                                src="../assets/images/paginate-left.png"
+                                alt="Previous"
+                            />
                         </button>
                         {paginationButtons}
-                        <button type="button" className={`page next-page ${nextButtonClass}`} onClick={e => this.handleNext()}>
-                            <img src="../assets/images/paginate-right.png" alt="" />
+                        <button
+                            type="button"
+                            className={`page next-page ${nextButtonClass}`}
+                            onClick={() => this.handleNext()}
+                        >
+                            <img
+                                src="../assets/images/paginate-right.png"
+                                alt="Next"
+                            />
                         </button>
                     </div>
                 </div>
@@ -239,12 +326,12 @@ class Pagination extends Component {
 Pagination.propTypes = {
     total: PropTypes.number.isRequired,
     perPage: PropTypes.number,
-    onPropertyChange: PropTypes.func,
+    onPropertyChange: PropTypes.func
 };
 
 Pagination.defaultProps = {
     onPropertyChange: null,
-    perPage: 5,
+    perPage: 5
 };
 
 export default Pagination;
