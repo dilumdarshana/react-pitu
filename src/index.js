@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './assets/styles/styles.scss';
+import left from './assets/images/pagination-left.png';
+import right from './assets/images/pagination-right.png';
 
 class Pagination extends Component {
     constructor(props) {
@@ -13,7 +16,7 @@ class Pagination extends Component {
             displaySize: 5, // how many page buttons show
             displayStartsAt: 1, // page buttons start number
             pageButtonsStack: [], // page buttons to show on current go
-            previousButtonClass: 'lst-disabled',
+            previousButtonClass: 'btn-disabled',
             nextButtonClass: ''
         };
     }
@@ -67,8 +70,8 @@ class Pagination extends Component {
         } = this.state;
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
         const nextButtonClass =
-            cursor === maxNumberOfButtons ? 'lst-disabled' : '';
-        const previousButtonClass = cursor === 1 ? 'lst-disabled' : '';
+            cursor === maxNumberOfButtons ? 'btn-disabled' : '';
+        const previousButtonClass = cursor === 1 ? 'btn-disabled' : '';
 
         await this.setState({ previousButtonClass, nextButtonClass });
     }
@@ -260,9 +263,9 @@ class Pagination extends Component {
             nextButtonClass
         } = this.state;
 
-        const { total, perPage } = this.props;
+        const { total, perPage, options: { perPageOptions, rightNavImg, leftNavImg } } = this.props;
 
-        const paginationPerPageList = [5, 10, 15];
+        const paginationPerPageList = perPageOptions;
 
         const defaultPerPage = 5;
 
@@ -301,7 +304,7 @@ class Pagination extends Component {
                             onClick={() => this.handlePrevious()}
                         >
                             <img
-                                src="../assets/images/paginate-left.png"
+                                src={leftNavImg}
                                 alt="Previous"
                             />
                         </button>
@@ -312,7 +315,7 @@ class Pagination extends Component {
                             onClick={() => this.handleNext()}
                         >
                             <img
-                                src="../assets/images/paginate-right.png"
+                                src={rightNavImg}
                                 alt="Next"
                             />
                         </button>
@@ -324,12 +327,22 @@ class Pagination extends Component {
 }
 
 Pagination.propTypes = {
+    options: PropTypes.shape({
+        perPageOptions: PropTypes.array,
+        rightNavImg: PropTypes.string,
+        leftNavImg: PropTypes.string,
+    }),
     total: PropTypes.number.isRequired,
     perPage: PropTypes.number,
-    onPropertyChange: PropTypes.func
+    onPropertyChange: PropTypes.func,
 };
 
 Pagination.defaultProps = {
+    options: {
+        perPageOptions: [5, 10, 15],
+        rightNavImg: right,
+        leftNavImg: left,
+    },
     onPropertyChange: null,
     perPage: 5
 };
