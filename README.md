@@ -1,5 +1,7 @@
 # React Pagination
 
+[![NPM](https://nodei.co/npm/react-pitu.png?downloads=true)](https://nodei.co/npm/react-pitu/)
+
 ## Installation
 
 ```
@@ -52,19 +54,23 @@ class UserComponent extends Component {
 export default UserComponent;
 
 ```
+
+## Preview
+![Example](https://i.gyazo.com/9a265a39f32b3ea88647c7addde47912.png)
+
 ## Props
 
 Name | Type | Default | Description
 --- | --- | --- | --- |
 `perPage` | Number | 5 | Items per page needs to show
 `total` | Number | | **Required** Total items count
-`options` | Object | | **Optional**
+`perPageOptions` | Array | [5, 10, 15] | Per page options
+`navImages` | Object | | **Optional**
 `onPropertyChange` | Function | | **Required.** Pagination change handler.Will emit cursor and itemsPerPage
 
-### options
+### navImages
 
 Name | Type | Default | Description
 --- | --- | --- | --- |
-`perPageOptions` | Array | [5, 10, 15] | Per page options
-`rightNavImg` | String | pagination-right.png | Right arrow navigation icon
-`leftNavImg` | String | pagination-left.png | Left arrow navigation icon
+`rightNavImg` | String | pagination-right.png | Path to right arrow navigation icon
+`leftNavImg` | String | pagination-left.png | Path to left arrow navigation icon

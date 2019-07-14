@@ -263,7 +263,7 @@ class Pagination extends Component {
             nextButtonClass
         } = this.state;
 
-        const { total, perPage, options: { perPageOptions, rightNavImg, leftNavImg } } = this.props;
+        const { total, perPage, perPageOptions, navImages: { rightNavImg, leftNavImg } } = this.props;
 
         const paginationPerPageList = perPageOptions;
 
@@ -327,22 +327,22 @@ class Pagination extends Component {
 }
 
 Pagination.propTypes = {
-    options: PropTypes.shape({
-        perPageOptions: PropTypes.array,
+    navImages: PropTypes.shape({
         rightNavImg: PropTypes.string,
         leftNavImg: PropTypes.string,
     }),
+    perPageOptions: PropTypes.array,
     total: PropTypes.number.isRequired,
     perPage: PropTypes.number,
     onPropertyChange: PropTypes.func,
 };
 
 Pagination.defaultProps = {
-    options: {
-        perPageOptions: [5, 10, 15],
+    navImages: {
         rightNavImg: right,
         leftNavImg: left,
     },
+    perPageOptions: [5, 10, 15],
     onPropertyChange: null,
     perPage: 5
 };
