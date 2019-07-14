@@ -25,7 +25,9 @@ class UserComponent extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        
+        if (prevProps.totalCount !== this.props.totalCount) {
+            this.setState({ totalItemCount: selectGetAllItemsTotal });
+        }
     }
 
     handlePaginationChange(data) {
@@ -38,7 +40,11 @@ class UserComponent extends Component {
         const { perPage, totalItemCount } = this.state;
 
         return(
-            <Pagination perPage={perPage} total={totalItemCount} onPropertyChange={this.handlePaginationChange} />
+            <Pagination
+                perPage={perPage}
+                total={totalItemCount}
+                onPropertyChange={this.handlePaginationChange}
+            />
         );
     }
 }
@@ -53,9 +59,10 @@ Name | Type | Default | Description
 `perPage` | Number | 5 | Items per page needs to show
 `total` | Number | | **Required** Total items count
 `options` | Object | | **Optional**
-`onPropertyChange` | Function | | **Required.** Pagination change handler. Will emit cursor and itemsPerPage
+`onPropertyChange` | Function | | **Required.** Pagination change handler.Will emit cursor and itemsPerPage
 
 ### options
+
 Name | Type | Default | Description
 --- | --- | --- | --- |
 `perPageOptions` | Array | [5, 10, 15] | Per page options
