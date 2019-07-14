@@ -12,8 +12,8 @@
     },
     "scripts": {
         "start": "webpack --watch",
-        "build": "webpack --colors --display-error-details",
-        "prepublish": "rm -rf ./build && babel ./src --out-dir ./build "
+        "build": "rm -rf ./build && webpack --colors --display-error-details",
+        "prepublish": "yarn run build"
     },
     "author": {
         "name": "Dilum Darshana",
