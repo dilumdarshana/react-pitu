@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import './assets/styles/styles.scss';
 import left from './assets/images/pagination-left.png';
 import right from './assets/images/pagination-right.png';
+import rightMost from './assets/images/pagination-right-most.png';
+import leftMost from './assets/images/pagination-left-most.png';
 
 class Pagination extends Component {
     constructor(props) {
@@ -19,6 +21,9 @@ class Pagination extends Component {
             previousButtonClass: 'btn-disabled',
             nextButtonClass: ''
         };
+
+        this.handleLastPage = this.handleLastPage.bind(this);
+        this.handleFirstPage = this.handleFirstPage.bind(this);
     }
 
     async componentDidMount() {
@@ -255,6 +260,14 @@ class Pagination extends Component {
         onPropertyChange(paginationData);
     }
 
+    handleLastPage() {
+        console.log('last page')
+    }
+
+    handleFirstPage() {
+        console.log('first page');
+    }
+
     render() {
         const {
             paginationOutData: { cursor },
@@ -263,7 +276,13 @@ class Pagination extends Component {
             nextButtonClass
         } = this.state;
 
-        const { total, perPage, perPageOptions, navImages: { rightNavImg, leftNavImg } } = this.props;
+        const {
+            total,
+            perPage,
+            perPageOptions,
+            navImages:
+                { rightNavImg, leftNavImg, rightMostNavImg, leftMostNavImg  },
+        } = this.props;
 
         const paginationPerPageList = perPageOptions;
 
@@ -300,12 +319,22 @@ class Pagination extends Component {
                     <div className="page-wrapper mobile-custom-margin">
                         <button
                             type="button"
+                            className={`page first-page ${previousButtonClass}`}
+                            onClick={this.handleFirstPage}
+                        >
+                            <img
+                                src={leftMostNavImg}
+                                alt="First Page"
+                            />
+                        </button>
+                        <button
+                            type="button"
                             className={`page prev-page ${previousButtonClass}`}
                             onClick={() => this.handlePrevious()}
                         >
                             <img
                                 src={leftNavImg}
-                                alt="Previous"
+                                alt="Previous Page"
                             />
                         </button>
                         {paginationButtons}
@@ -316,7 +345,17 @@ class Pagination extends Component {
                         >
                             <img
                                 src={rightNavImg}
-                                alt="Next"
+                                alt="Next Page"
+                            />
+                        </button>
+                        <button
+                            type="button"
+                            className={`page last-page ${nextButtonClass}`}
+                            onClick={this.handleLastPage}
+                        >
+                            <img
+                                src={rightMostNavImg}
+                                alt="Last Page"
                             />
                         </button>
                     </div>
@@ -330,6 +369,8 @@ Pagination.propTypes = {
     navImages: PropTypes.shape({
         rightNavImg: PropTypes.string,
         leftNavImg: PropTypes.string,
+        rightMostNavImg: PropTypes.string,
+        leftMostNavImg: PropTypes.string,
     }),
     perPageOptions: PropTypes.array,
     total: PropTypes.number.isRequired,
@@ -341,6 +382,8 @@ Pagination.defaultProps = {
     navImages: {
         rightNavImg: right,
         leftNavImg: left,
+        rightMostNavImg: rightMost,
+        leftMostNavImg: leftMost,
     },
     perPageOptions: [5, 10, 15],
     onPropertyChange: null,

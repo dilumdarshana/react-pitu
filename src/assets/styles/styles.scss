@@ -41,12 +41,20 @@
         background-color: #e9dfdb;
         color: #ef6937;
     }
+    .first-page {
+        margin-right: 1.25rem;
+        padding: 0;
+    }
     .prev-page {
         margin-right: 1.25rem;
         padding: 0;
     }
     .next-page {
         margin-left: 1.25rem;
+        padding: 0;
+    }
+    .last-page {
+        margin-left: 0.25rem;
         padding: 0;
     }
     .page-wrapper {
