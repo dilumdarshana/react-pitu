@@ -74,3 +74,5 @@ Name | Type | Default | Description
 --- | --- | --- | --- |
 `rightNavImg` | String | pagination-right.png | Path to right arrow navigation icon
 `leftNavImg` | String | pagination-left.png | Path to left arrow navigation icon
+`leftMostNavImg` | String | pagination-left-most.png | Path to left most arrow navigation icon
+`rightMostNavImg` | String | pagination-right-most.png | Path to right most arrow navigation icon

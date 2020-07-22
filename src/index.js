@@ -19,11 +19,15 @@ class Pagination extends Component {
             displayStartsAt: 1, // page buttons start number
             pageButtonsStack: [], // page buttons to show on current go
             previousButtonClass: 'btn-disabled',
-            nextButtonClass: ''
+            nextButtonClass: '',
+            firstButtonClass: 'btn-disabled',
+            lastButtonClass: '',
         };
 
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handleFirstPage = this.handleFirstPage.bind(this);
+        this.handleNext = this.handleNext.bind(this);
+        this.handlePrevious = this.handlePrevious.bind(this);
     }
 
     async componentDidMount() {
@@ -170,6 +174,23 @@ class Pagination extends Component {
         }
     }
 
+    async walkToEnd() {
+        const {
+            displaySize,
+        } = this.state;
+        const maxNumberOfButtons = this.getTotalNumberOfButtons();
+
+        await this.setState({ displayStartsAt: maxNumberOfButtons - displaySize + 1 });
+
+        this.createPageButtonStack();
+    }
+
+    async walkToFirst() {
+        await this.setState({ displayStartsAt: 1 });
+
+        this.createPageButtonStack();
+    }
+
     async handlePrevious() {
         const {
             paginationOutData: { cursor, itemsPerPage }
@@ -260,12 +281,36 @@ class Pagination extends Component {
         onPropertyChange(paginationData);
     }
 
-    handleLastPage() {
-        console.log('last page')
+    async handleLastPage() {
+        const {
+            paginationOutData: { itemsPerPage }
+        } = this.state;
+        const { onPropertyChange } = this.props;
+
+        const nextCursor = this.getTotalNumberOfButtons();
+
+        this.walkToEnd();
+
+        await this.setState({
+            paginationOutData: { cursor: nextCursor, itemsPerPage }
+        });
+
+        onPropertyChange({ cursor: nextCursor, itemsPerPage });
     }
 
-    handleFirstPage() {
-        console.log('first page');
+    async handleFirstPage() {
+        const {
+            paginationOutData: { itemsPerPage }
+        } = this.state;
+        const { onPropertyChange } = this.props;
+
+        this.walkToFirst();
+
+        await this.setState({
+            paginationOutData: { cursor: 1, itemsPerPage }
+        });
+
+        onPropertyChange({ cursor: 1, itemsPerPage });
     }
 
     render() {
@@ -273,7 +318,9 @@ class Pagination extends Component {
             paginationOutData: { cursor },
             pageButtonsStack,
             previousButtonClass,
-            nextButtonClass
+            nextButtonClass,
+            firstButtonClass,
+            lastButtonClass,
         } = this.state;
 
         const {
@@ -319,7 +366,7 @@ class Pagination extends Component {
                     <div className="page-wrapper mobile-custom-margin">
                         <button
                             type="button"
-                            className={`page first-page ${previousButtonClass}`}
+                            className={`page first-page ${firstButtonClass}`}
                             onClick={this.handleFirstPage}
                         >
                             <img
@@ -330,7 +377,7 @@ class Pagination extends Component {
                         <button
                             type="button"
                             className={`page prev-page ${previousButtonClass}`}
-                            onClick={() => this.handlePrevious()}
+                            onClick={this.handlePrevious}
                         >
                             <img
                                 src={leftNavImg}
@@ -341,7 +388,7 @@ class Pagination extends Component {
                         <button
                             type="button"
                             className={`page next-page ${nextButtonClass}`}
-                            onClick={() => this.handleNext()}
+                            onClick={this.handleNext}
                         >
                             <img
                                 src={rightNavImg}
@@ -350,7 +397,7 @@ class Pagination extends Component {
                         </button>
                         <button
                             type="button"
-                            className={`page last-page ${nextButtonClass}`}
+                            className={`page last-page ${lastButtonClass}`}
                             onClick={this.handleLastPage}
                         >
                             <img
