@@ -78,11 +78,32 @@ class Pagination extends Component {
             paginationOutData: { cursor }
         } = this.state;
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
-        const nextButtonClass =
-            cursor === maxNumberOfButtons ? 'btn-disabled' : '';
-        const previousButtonClass = cursor === 1 ? 'btn-disabled' : '';
 
-        await this.setState({ previousButtonClass, nextButtonClass });
+        let nextButtonClass = '';
+        let previousButtonClass = '';
+        let firstButtonClass = '';
+        let lastButtonClass = '';
+
+        if (cursor === 1) {
+            previousButtonClass = 'btn-disabled';
+            firstButtonClass = 'btn-disabled';
+        } else {
+            previousButtonClass = '';
+            firstButtonClass = '';
+        }
+
+        if (cursor === maxNumberOfButtons) {
+            nextButtonClass = 'btn-disabled';
+            lastButtonClass = 'btn-disabled';
+        } else {
+            nextButtonClass = '';
+            lastButtonClass = '';
+        }
+        // const nextButtonClass =
+        //     cursor === maxNumberOfButtons ? 'btn-disabled' : '';
+        // const previousButtonClass = cursor === 1 ? 'btn-disabled' : '';
+
+        this.setState({ previousButtonClass, nextButtonClass, firstButtonClass, lastButtonClass });
     }
 
     decideWalkingDirection() {
