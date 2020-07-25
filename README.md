@@ -28,7 +28,7 @@ class UserComponent extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.totalCount !== this.props.totalCount) {
-            this.setState({ totalItemCount: selectGetAllItemsTotal });
+            this.setState({ totalItemCount: <TOTAL_ITEM_COUNT> });
         }
     }
 
@@ -55,8 +55,11 @@ export default UserComponent;
 
 ```
 
-## Preview
+## Preview (1.1.x)
 ![Example](https://i.gyazo.com/9a265a39f32b3ea88647c7addde47912.png)
+
+## Preview (1.2.x)
+![Example](https://i.gyazo.com/932cc3a1edb408fc75ca9cfc77bb9bef.png)
 
 ## Props
 

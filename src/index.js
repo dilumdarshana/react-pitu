@@ -64,6 +64,9 @@ class Pagination extends Component {
         }
     }
 
+    /**
+     * Decide total number of pages need to display
+     */
     getTotalNumberOfButtons() {
         const {
             paginationOutData: { itemsPerPage }
@@ -73,6 +76,9 @@ class Pagination extends Component {
         return Math.ceil(total / itemsPerPage);
     }
 
+    /**
+     * Next/Previous buttons enable/disable
+     */
     async setNextPrevButtonStatus() {
         const {
             paginationOutData: { cursor }
@@ -87,17 +93,11 @@ class Pagination extends Component {
         if (cursor === 1) {
             previousButtonClass = 'btn-disabled';
             firstButtonClass = 'btn-disabled';
-        } else {
-            previousButtonClass = '';
-            firstButtonClass = '';
         }
 
         if (cursor === maxNumberOfButtons) {
             nextButtonClass = 'btn-disabled';
             lastButtonClass = 'btn-disabled';
-        } else {
-            nextButtonClass = '';
-            lastButtonClass = '';
         }
         // const nextButtonClass =
         //     cursor === maxNumberOfButtons ? 'btn-disabled' : '';
@@ -200,6 +200,8 @@ class Pagination extends Component {
             displaySize,
         } = this.state;
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
+
+        this.setNextPrevButtonStatus();
 
         await this.setState({ displayStartsAt: maxNumberOfButtons - displaySize + 1 });
 
@@ -326,6 +328,8 @@ class Pagination extends Component {
         const { onPropertyChange } = this.props;
 
         this.walkToFirst();
+
+        this.setNextPrevButtonStatus();
 
         await this.setState({
             paginationOutData: { cursor: 1, itemsPerPage }
