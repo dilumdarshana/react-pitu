@@ -106,6 +106,9 @@ class Pagination extends Component {
         this.setState({ previousButtonClass, nextButtonClass, firstButtonClass, lastButtonClass });
     }
 
+    /**
+     * When user click on button list, decide goto left side or right side
+     */
     decideWalkingDirection() {
         const {
             paginationOutData: { cursor },
@@ -125,6 +128,9 @@ class Pagination extends Component {
         return direction;
     }
 
+    /**
+     * Crete page button list
+     */
     async createPageButtonStack() {
         const { displayStartsAt, displaySize } = this.state;
         const itemsArr = [];
@@ -144,6 +150,9 @@ class Pagination extends Component {
         await this.setState({ pageButtonsStack: itemsArr });
     }
 
+    /**
+     * Goto right side from pagination buttons list
+     */
     async walkToRight() {
         const {
             displayStartsAt,
@@ -172,6 +181,9 @@ class Pagination extends Component {
         }
     }
 
+    /**
+     * Goto left side from pagination buttons list
+     */
     async walkToLeft() {
         const {
             displayStartsAt,
@@ -195,25 +207,38 @@ class Pagination extends Component {
         }
     }
 
+    /**
+     * Goto last page
+     */
     async walkToEnd() {
         const {
             displaySize,
         } = this.state;
         const maxNumberOfButtons = this.getTotalNumberOfButtons();
 
-        this.setNextPrevButtonStatus();
+        const lastPage = maxNumberOfButtons - displaySize + 1;
+        
+        await this.setState({ cursor: lastPage, displayStartsAt: lastPage });
 
-        await this.setState({ displayStartsAt: maxNumberOfButtons - displaySize + 1 });
+        await this.setNextPrevButtonStatus();
 
         this.createPageButtonStack();
     }
 
+    /**
+     * Go to first page
+     */
     async walkToFirst() {
-        await this.setState({ displayStartsAt: 1 });
+        await this.setState({ cursor: 1, displayStartsAt: 1 });
+
+        await this.setNextPrevButtonStatus();
 
         this.createPageButtonStack();
     }
 
+    /**
+     * Goto single page left side from previous button
+     */
     async handlePrevious() {
         const {
             paginationOutData: { cursor, itemsPerPage }
@@ -237,6 +262,9 @@ class Pagination extends Component {
         onPropertyChange({ cursor: nextCursor, itemsPerPage });
     }
 
+    /**
+     * Goto single page right side from next button
+     */
     async handleNext() {
         const {
             paginationOutData: { cursor, itemsPerPage }
