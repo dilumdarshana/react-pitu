@@ -1,3 +1,10 @@
+/**
+ * React dynamic pagination component
+ *
+ * @version 1.2.0
+ * @author [Dilum Darshana](https://github.com/dilumdarshana)
+ */
+'use strict';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './assets/styles/styles.scss';
@@ -289,6 +296,12 @@ class Pagination extends Component {
         onPropertyChange({ cursor: nextCursor, itemsPerPage });
     }
 
+    /**
+     * Per page handler. Decide how many items need to show on a single page.
+     * Eg. [5, 10, 20]
+     * 
+     * @param {*} e Event object from per page dropdown
+     */
     async handleItemsPerPage(e) {
         const newItemsPerPage = e.target.value;
         const { onPropertyChange } = this.props;
@@ -307,6 +320,11 @@ class Pagination extends Component {
         this.createPageButtonStack();
     }
 
+    /**
+     * Goto clicked page from pagination buttons
+     * 
+     * @param {*} page Clicked page number
+     */
     async handleCurrentPage(page) {
         const {
             paginationOutData: { itemsPerPage }
@@ -332,6 +350,9 @@ class Pagination extends Component {
         onPropertyChange(paginationData);
     }
 
+    /**
+     * Goto last page from next most button (>>)
+     */
     async handleLastPage() {
         const {
             paginationOutData: { itemsPerPage }
@@ -349,6 +370,9 @@ class Pagination extends Component {
         onPropertyChange({ cursor: nextCursor, itemsPerPage });
     }
 
+    /**
+     * Goto first page from previous most button (<<)
+     */
     async handleFirstPage() {
         const {
             paginationOutData: { itemsPerPage }
@@ -471,6 +495,7 @@ Pagination.propTypes = {
         leftNavImg: PropTypes.string,
         rightMostNavImg: PropTypes.string,
         leftMostNavImg: PropTypes.string,
+        
     }),
     perPageOptions: PropTypes.array,
     total: PropTypes.number.isRequired,
@@ -484,6 +509,7 @@ Pagination.defaultProps = {
         leftNavImg: left,
         rightMostNavImg: rightMost,
         leftMostNavImg: leftMost,
+
     },
     perPageOptions: [5, 10, 15],
     onPropertyChange: null,
